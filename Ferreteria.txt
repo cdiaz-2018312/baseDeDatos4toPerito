@@ -1,0 +1,117 @@
+create database ferreteria;
+use ferreteria;
+
+create table marca(id_marca integer not null,
+nombre varchar(20),
+primary key (id_marca));
+
+INSERT INTO marca (id_marca,nombre) values 
+('m1', 'tool'),
+('m2', 'Jungle'),
+('m3','Calisto');
+ 
+
+create table tipo_herramienta(id_tipo_herramienta integer not null,
+herramienta varchar(20),
+primary key (id_tipo_herramienta));
+
+insert into tipo_herramienta(id_tipo_herramienta,herramienta) values
+('t1','martillo'),
+('t2','serrucho'),
+('t3','clavos'); 
+
+create table colaboradores(id_colaboradores integer not null,
+nombre varchar(20),
+direccion varchar(20),
+puesto varchar(20),
+telefono integer,
+primary key(id_colaboradores));
+
+insert into colaboradores(id_colaboradores,nombre,direccion,puesto,telefono) values
+('c1','Carlos','hipodromo-zona 2','ventas','454545'),
+('c2','Julio','colonia alameda zona 6','cajero','69786'),
+('c3','Rosa','gerente','avenida de los arboles zona 10','690936');
+
+create table zona(id_zona integer not null,
+Numerozona integer,
+primary key(id_zona));
+insert into zona(id_zona,Numerozona) values
+('z1','1'),
+('z2','2'),
+('z3','3');
+
+create table departamento(id_departamento integer not null,
+Nombre varchar(20),
+primary key(id_departamento));
+
+insert into departamento(id_departamento,nombre) values
+('d1','chiquimula'),
+('d2','Petén'),
+('d3','Guatemala');
+
+
+create table ciudad (id_ciudad integer not null,
+nombre varchar(20),
+primary key(id_ciudad));
+
+insert into ciudad(id_ciudad,nombre)values 
+('l1','Guatemala'),
+('l2','los andes'),
+('l3','las guacamayas');
+
+create table colonia(id_colonia integer not null,
+nombre varchar(20),
+primary key(id_colonia));
+
+insert into colonia(id_colonia,nombre)values
+('co1','guajitos'),
+('co2','la limonada'),
+('co3','Colom Argueta');
+
+create table clientes(id_clientes integer not null,
+nombre varchar(20),
+telefono integer,
+edad integer,
+id_zona integer,
+id_departamento integer,
+id_ciudad integer,
+id_colonia integer,
+foreign key (id_zona) references zona(id_zona),
+foreign key (id_departamento) references departamento(id_departamento),
+foreign key (id_ciudad) references ciudad(id_ciudad),
+foreign key (id_colonia) references colonia(id_colonia),
+primary key (id_clientes));
+insert into clientes (id_clientes,nombre,telefono,edad,id_zona,id_departamento,id_ciudad,id_colonia)values
+('cl1','Ramiro','456674342156','40','z3','d2','l3','co3'),
+('cl2','Martina','6723313334','20','z1','d1','l1','co1'),
+('cl3','Maritza','54990900','53','z2','d3','l2','co2');
+
+create table inventario( id_inventario integer not null,
+descripcion varchar(20),
+stock integer,
+costo integer,
+precio integer,
+id_marca integer,
+id_tipo_herramienta integer,
+primary key (id_inventario),
+foreign key (id_marca) references marca(id_marca),
+foreign key (id_tipo_herramienta) references tipo_herramienta (id_tipo_herramienta));
+
+insert into inventario(id_inventario,id_tipo_herramienta,id_marca,descripcion,stock,costo,precio) values
+('r1','t1','m2','martillo de acero','30','45','60'),
+('r2','t2','m1','serrucho grande','12','30','45'),
+('r3','t1','m2','clavos de lamina','126','0.50','1.50');
+
+
+create table factura( id_factura integer not null,
+id_cliente integer,
+id_inventario integer,
+id_colaboradores integer,
+foreign key (id_cliente) references clientes(id_clientes),
+foreign key (id_inventario) references inventario(id_inventario),
+foreign key (id_colaboradores) references colaboradores(id_colaboradores),
+primary key (id_factura));
+insert into factura (id_factura,id_cliente,id_inventario,id_colaboradores) values 
+('f1','cl1','r2','c2'),
+('f2','cl2','r3','c1'),
+('f3','cl3','r1','cl3');

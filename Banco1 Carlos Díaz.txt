@@ -1,0 +1,193 @@
+create database banco1;
+use banco1;
+
+create table cuenta(id_cuenta integer not null,
+tipo varchar(30),
+primary key(id_cuenta));
+insert into cuenta(id_cuenta,tipo) VALUES
+("1","Gold"),
+("2","Diamond"),
+("3","premium");
+update cuenta set tipo= "Habiente" where id_cuenta=1;
+update cuenta set tipo= "Ahorro" where id_cuenta=2 ;
+update cuenta set tipo= "Normal" where id_cuenta=3;
+insert into cuenta(id_cuenta,tipo) VALUES
+("4","mancomunada");
+
+create table tarjeta(id_tarjeta integer not null,
+tipo varchar(30),
+primary key(id_tarjeta));
+
+INSERT INTO tarjeta(id_tarjeta,tipo)VALUES 
+("1","premium"),
+("2","Gold"),
+("3","SIlver");
+
+create table trabajador(id_trabajador integer not null,
+nombre varchar(10),
+apellido varchar(10),
+edad integer,
+telefono integer,
+direccion varchar(20),
+primary key(id_trabajador));
+insert into trabajador(id_trabajador,nombre,apellido,edad,telefono,direccion) VALUES
+("1","Manuela","Pedromo","20","234421","20-34 avenida alamos"),
+("2","Jorge","Salazar","23","434648793","8va calle zona 4"),
+("3","Julio","Iglesias","43","879348","5ta calle cementerio"),
+("4","Stefania","Garcia","18","9867894","9na calle zona 1"),
+("5","Auron","Play","32","987420","1era calle zona 1 "),
+("6","Ibai","LLanos","26","837429487","2da calle zona 4"),
+("7","Cristiano","Ronaldo","36","843211234","6ma calle zona 4"),
+("8","Julian","De la vega","61","98237492","7ma calle zona 9"),
+("9","Arnoldo","Pedromo","45","0989491","2da calle zona 18"),
+("10","Federico","Alveiro","19","0843920","10ma calle zona 13");
+
+
+
+create table sucursal(id_sucursal integer not null,
+nombre varchar(30),
+direccion varchar(30),
+primary key(id_sucursal));
+insert into sucursal (id_sucursal,nombre,direccion) VALUES
+("1","InterAmericano Zona 1","4ta calle zona 1"),
+("2","InterAmericano Zona 2","4ta calle zona 2"),
+("3","InterAmericano Zona 3","4ta calle zona 3"),
+("4","InterAmericano Zona 4","4ta calle zona 4"),
+("5","InterAmericano Zona 5","4ta calle zona 5"),
+("6","InterAmericano Zona 6","4ta calle zona 6"),
+("7","InterAmericano Zona 7","4ta calle zona 7"),
+("8","InterAmericano Zona 8","4ta calle zona 8"),
+("9","InterAmericano Zona 9","4ta calle zona 9"),
+("10","InterAmericano Zona 10","4ta calle zona 10");
+
+
+create table Asig_sucursal (id_asig_sucursal integer not null,
+id_trabajador integer,
+id_sucursal integer,
+Foreign key (id_trabajador) REFERENCES trabajador(id_trabajador),
+Foreign key (id_sucursal) References sucursal(id_sucursal),
+Primary key (id_asig_sucursal));
+
+insert into Asig_sucursal(id_asig_sucursal,id_trabajador,id_sucursal) Values 
+("1","3","2"),("11","2","5"),
+("2","1","3"),("12","3","1"),
+("3","2","4"),("13","5","3"),
+("4","6","1"),("14","8","6"),
+("5","7","10"),("15","10","1"),
+("6","8","6"),("16","2","2"),
+("7","10","7"),("17","1","8"),
+("8","9","9"),("18","5","9"),
+("9","4","8"),("19","7","10"),
+("10","5","5"),("20","6","4");
+create table cuenta_habiente(id_cuenta_habiente integer not null,
+nombre varchar(30),
+apellido varchar(30),
+edad integer,
+direccion varchar(30),
+telefono integer,
+id_tarjeta integer,
+id_cuenta integer,
+foreign key (id_tarjeta) references tarjeta(id_tarjeta),
+foreign key (id_cuenta) references cuenta(id_cuenta),
+primary key(id_cuenta_habiente));
+INsert into cuenta_habiente (id_cuenta_habiente,nombre,apellido,edad,direccion,telefono,id_tarjeta,id_cuenta)
+VAlues ("1","Rodolfo","zuñiga","39","5ta calle zona 2","3425325","2","1"),
+("2","Manuel","Fernandez","51","8va calle zona 3",987493279,"1","1"),
+("3","Perxita","perchas","31","7ma calle zona 9","978924","3","1"),
+("4","Pablo","Hernandez","41","11va calle zona 10",590394,"2","1"),
+("5","Salomon","Coronado","22","18va calle zona 1",98347,"1","1"),
+("6","Maria","De la Rosa","19","1era calle zona 21",54342,"3","1"),
+("7","Fernanda","zapata","55","20 calle zona 15",098483984,"1","1"),
+("8","Pancracio","Solis","32","1era calle zona 4","908734","3","1"),
+("9","Gustavo","Menguante","56","5ta calle zona 6",3425325,"2","1"),
+("10","Julietta","vanegas","71","2da calle zona 12",986312,"3","1");
+
+create table asignar_cuenta(id_asig_cuenta integer not null,
+id_cuenta_habiente integer,
+id_cuenta integer,
+id_sucursal integer,
+foreign key (id_cuenta_habiente) references cuenta_habiente(id_cuenta_habiente),
+foreign key (id_cuenta) references cuenta(id_cuenta),
+primary key(id_asig_cuenta),
+Foreign key (Id_sucursal) References sucursal (id_sucursal));
+
+
+INSERT INTO asignar_cuenta(id_asig_cuenta,id_cuenta_habiente,id_cuenta,id_sucursal) VAlues
+("1","3","1","3"),
+("2","5","2","2"),
+("3","8","3","5"),
+("4","10","4","1"),
+("5","2","1","3"),
+("6","6","2","9"),
+("7","9","3","4"),
+("8","3","4","3"),
+("9","4","1","6"),
+("10","1","2","3");
+
+create table cuenta_mancomunada(id_cuenta_manco integer not null,
+Nombres_Mancomunado Varchar(40),
+Edad_mancomunados varchar(10),
+primary key(id_cuenta_manco));
+Insert into cuenta_mancomunada(id_cuenta_manco,nombres_mancomunado,Edad_mancomunados) Values
+("1","Julio Aldana-Rodrigo Paredes","21-24"),
+("2","Josue Ramirez-Fatima Rivera","34-45"),
+("3","Melisa Lazáro-Carlos Díaz","19-18"),
+("4","Ana Cordova-Julieta Munich","29-32"),
+("5","Sarvelio Guinaldo-Jose Eredia","54-55"),
+("6","Reynaldo Fuentes-Denisse Calderon","32-21"),
+("7","Mia Suiza-Ruinaldo Gonda","32-33"),
+("8","Palermo Jeréz-Ramiro Cifuentes","45-56"),
+("9","Jason Chacon-Jorge Paz","19-20"),
+("10","Jaqueline Godinez-Bartolome de las casas","32-25");
+
+
+
+
+create table transacciones(id_transaccion integer not null,
+tipo varchar(30),
+id_tarjeta integer,
+id_trabajador integer,
+id_sucursal integer,
+foreign key (id_tarjeta) references tarjeta(id_tarjeta),
+foreign key (id_trabajador) references trabajador(id_trabajador),
+foreign key (id_sucursal) references sucursal(id_sucursal),
+primary key(id_transaccion));
+
+Insert into transacciones(id_transaccion,tipo,id_tarjeta,id_trabajador,id_sucursal) Value
+("1","Deposito","2","4","5"),
+("2","extraccion","3","7","1"),
+("3","trasnferencia","1","5","7"),
+("4","Deposito","1","2","3"),
+("5","Extraccion","3","2","10");
+
+create table asignar_tarjeta(id_asig_tarjeta integer not null,
+id_cuenta_habiente integer,
+id_tarjeta integer,
+id_sucursal integer,
+foreign key (id_cuenta_habiente) references cuenta_habiente(id_cuenta_habiente),
+foreign key (id_tarjeta) references tarjeta(id_tarjeta),
+foreign key (id_sucursal) references sucursal(id_sucursal),
+primary key(id_asig_tarjeta));
+
+Insert into asignar_tarjeta(id_asig_tarjeta,id_cuenta_habiente,id_tarjeta,id_sucursal) 
+Values ("1","3","1","4"),
+("2","5","2","6"),
+("3","3","3","4"),
+("4","8","2","9"),
+("5","3","3","1"),
+("6","9","2","2"),
+("7","1","3","8"),
+("8","9","2","4"),
+("9","10","1","7"),
+("10","2","2","10");
+
+
+Select count(id_trabajador) from Asig_sucursal where id_sucursal=1;
+
+select count(id_asig_cuenta)as Cuentas,sucursal.nombre As Banco  from asignar_cuenta   inner join sucursal on sucursal.id_sucursal =asignar_cuenta.id_sucursal  where sucursal.nombre="InterAmericano Zona 3";
+-- descendiente--
+Select trabajador.nombre,trabajador.apellido from trabajador inner join asig_sucursal on asig_sucursal.id_sucursal=5   where asig_sucursal.id_sucursal=5 Order by apellido ;
+-- ascendente--
+Select trabajador.nombre,trabajador.apellido from trabajador inner join asig_sucursal on asig_sucursal.id_sucursal=5   where asig_sucursal.id_sucursal=5 Order by apellido Desc;
+
+select count(id_tarjeta)As CantidadTarjetas,sucursal.nombre from Asignar_tarjeta inner join sucursal on sucursal.id_sucursal=4 and asignar_tarjeta.id_sucursal=4 where sucursal.nombre="InterAmericano Zona 4";
